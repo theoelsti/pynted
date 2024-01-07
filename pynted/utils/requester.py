@@ -13,7 +13,7 @@ class Requester():
         self.headers = {}
         self.headers.update({
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "Content-Type": "application/json; charset=UTF-8",
         })
 
     def post(self, endpoint: str, data: dict = {})-> requests.Response:
@@ -21,8 +21,8 @@ class Requester():
         try:
             res = requests.post(
                 endpoint,
-                params=json.dumps(data),
-                headers=self.headers
+                data = json.dumps(data),
+                headers = self.headers
             )
             return res
         except requests.exceptions.Timeout:

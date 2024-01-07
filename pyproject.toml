@@ -1,0 +1,11 @@
+[project]
+name = "pynted"
+version = "1.0.0"
+
+description = "Vinted API library for Python"
+authors = [
+    {"name"= "theoelsti", "email"= "theolsti@domain.local"}
+]
+dependencies = [
+
+]

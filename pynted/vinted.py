@@ -3,25 +3,34 @@ import logging
 
 # Package Imports
 from pynted.utils.requester import Requester
-import pynted.exceptions.vinted as exceptions
+import pynted.exceptions.requester as exceptions
 
 
 logger: logging.Logger = logging.getLogger(__package__)
 
 
 class Pynted():
-    def __init__(self, login, password) -> None:
-        self._email = login
-        self._password = password
+    def __init__(self) -> None:
         self.requester = Requester()
-        self._token = self.get_public_token()
+        self._token = None
+        self.get_public_token()
         self.requester.headers.update({
             "Authorization": f"Bearer {self._token}"
         })
 
 
     def get_public_token(self):
-        logger.info("Getting token")
+        """Retrieve the public `_token` and set it to the `Requester`.
+
+        Raises:
+            * exceptions.TooManyAttempts: Raised when the server has blocked the user for too many attempts.
+            * exceptions.InvalidCredentials: Raised when the user credentials are invalid.
+            * exceptions.UnknownError: Raised when the code is not 200
+
+        Returns:
+            `Nothing`
+        """
+        logger.debug("Getting token")
         endpoint = "https://www.vinted.fr/oauth/token"
         data = {
             "scope": "public",
@@ -32,11 +41,17 @@ class Pynted():
             endpoint,
             data = data
         )
+        if res.status_code == 403:
+            raise exceptions.TooManyAttempts()
+        if res.status_code == 401:
+            raise exceptions.InvalidCredentials()
+        if res.status_code != 200:
+            raise exceptions.UnknownError()
+        logger.debug("Token: %s", res.json()["access_token"])
         self._token = res.json()["access_token"]
-        return res
 
 
-    def login(self):
+    def login(self, user, password):
         logger.info("Logging in")
         endpoint = "https://www.vinted.fr/api/v2/users?adjust_campaign=Organic"
         data = {

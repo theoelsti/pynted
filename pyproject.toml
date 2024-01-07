@@ -7,5 +7,5 @@ authors = [
     {"name"= "theoelsti", "email"= "theolsti@domain.local"}
 ]
 dependencies = [
-
+    "requests > 2.31.0"
 ]

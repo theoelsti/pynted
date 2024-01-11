@@ -31,3 +31,20 @@ class Requester():
         except requests.exceptions.ConnectionError:
             logger.error("Connection error for %s", endpoint)
             return None
+    
+    def get(self, endpoint: str, params: dict = {})-> requests.Response:
+        logger.debug("GET request to %s with params %s", endpoint, params)
+        try:
+            res = requests.get(
+                endpoint,
+                params = params,
+                headers = self.headers
+            )
+            return res
+        except requests.exceptions.Timeout:
+            logger.error("Request timed out for %s", endpoint)
+            return None
+        except requests.exceptions.ConnectionError:
+            logger.error("Connection error for %s", endpoint)
+            return None
+

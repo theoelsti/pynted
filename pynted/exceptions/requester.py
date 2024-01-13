@@ -11,6 +11,7 @@ class TooManyAttempts(Exception):
     def __init__(self, message: str = "Too many attempts"):
         super().__init__(message)
 
+
 class UnknownError(Exception):
     """Raised when an unknown error occured."""
 

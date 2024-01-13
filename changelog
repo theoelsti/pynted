@@ -2,18 +2,18 @@
 
 ## [Unreleased]
 
-## [0.0.1] - 2024-01-11
+## [0.0.1] - 2024-01-13
 
 ### Added
 
 - User search by name
 - User + Requester object
-
+- Get filters : color, status, material
 ### Fixed
 
 
 ### Changed
-
+- Requester to session
 
 ### Removed
 

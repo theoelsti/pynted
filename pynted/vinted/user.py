@@ -1,4 +1,4 @@
-class VintedUser():
+class VintedUser:
     """A user on Vinted platform."""
 
     def __init__(self, config: dict) -> None:
@@ -19,7 +19,7 @@ class VintedUser():
             "name": config.get("real_name"),
             "email": config.get("email"),
             "profile_picture": config.get("photo", {}).get("url"),
-            "color": config.get("config", {}).get("photo", {}).get("dominant_color")
+            "color": config.get("config", {}).get("photo", {}).get("dominant_color"),
         }
         self.stats = {
             "given_item_count": config.get("given_item_count"),
@@ -34,4 +34,6 @@ class VintedUser():
         self.country_iso_code = config.get("country_iso_code")
         self.verification = {}
         for key in ["email", "phone", "facebook", "google"]:
-            self.verification[key] = bool(config.get("verification", {}).get(key, {}).get("valid"))
+            self.verification[key] = bool(
+                config.get("verification", {}).get(key, {}).get("valid")
+            )

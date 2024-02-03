@@ -4,6 +4,7 @@ from typing import Dict
 
 import pynted.exceptions.requester as req_exceptions
 import pynted.exceptions.vinted as vin_exceptions
+
 # Package Imports
 from pynted.utils.requester import Requester
 from pynted.vinted.user import VintedUser
@@ -11,7 +12,7 @@ from pynted.vinted.user import VintedUser
 logger: logging.Logger = logging.getLogger(__package__)
 
 
-class Pynted():
+class Pynted:
     """Pynted class to interact with the vinted api.
 
     # Args:
@@ -47,6 +48,7 @@ class Pynted():
         `vin_exceptions.NoFilterRetrieved`: No filters retrieved from vynted.
 
     """
+
     def __init__(self, locale: str = "en") -> None:
         self.requester = Requester(locale)
         self.locale = locale
@@ -56,9 +58,7 @@ class Pynted():
         self._get_public_token()
         endpoint = f"{self.base_url}/api/v2/session_locale"
         self.requester.put(endpoint, data={"locale": "es-fr"})
-        self.requester.headers.update({
-            "Authorization": f"Bearer {self._token}"
-        })
+        self.requester.headers.update({"Authorization": f"Bearer {self._token}"})
         self.colors: Dict = None
         self.statuses: Dict = None
         self.materials: Dict = None
@@ -75,9 +75,9 @@ class Pynted():
             }
         """
         return {
-            'colors': self.colors,
-            'statuses': self.statuses,
-            'materials': self.materials
+            "colors": self.colors,
+            "statuses": self.statuses,
+            "materials": self.materials,
         }
 
     def get_user_by_username(self, username: str) -> VintedUser:
@@ -136,7 +136,6 @@ class Pynted():
     # -+-+-+-+-+-+- #
 
     def _retrieve_filters(self):
-
         """Get filters from vinted api, then add them to the class.
 
         Raises:
@@ -146,38 +145,23 @@ class Pynted():
 
         logger.debug("Getting filters")
         endpoint = f"{self.base_url}/api/v2/catalog/filters"
-        res = self.requester.get(
-            endpoint
-        )
+        res = self.requester.get(endpoint)
         if res.json()["code"] != 0:
             raise req_exceptions.UnknownError()
         # Assign the filters to the class via variables
-        colors = [
-            f for f in res.json()["filters"] if f.get("type") == "color"
-        ]
-        statuses = [
-            f for f in res.json()["filters"] if f.get("type") == "status"
-        ]
-        materials = [
-            f for f in res.json()["filters"] if f.get("type") == "material"
-        ]
-        sizes = [
-            f for f in res.json()["filters"] if f.get("type") == "size"
-        ]
+        colors = [f for f in res.json()["filters"] if f.get("type") == "color"]
+        statuses = [f for f in res.json()["filters"] if f.get("type") == "status"]
+        materials = [f for f in res.json()["filters"] if f.get("type") == "material"]
+        sizes = [f for f in res.json()["filters"] if f.get("type") == "size"]
         # Check if there is any of the list that is empty
         if not all([colors, statuses, sizes, materials]):
             raise vin_exceptions.NoFilterRetrieved()
-        self.colors = {
-            color['title']: color['id']
-            for color in colors[0]['options']
-        }
+        self.colors = {color["title"]: color["id"] for color in colors[0]["options"]}
         self.statuses = {
-            status['title']: status['id']
-            for status in statuses[0]['options']
+            status["title"]: status["id"] for status in statuses[0]["options"]
         }
         self.materials = {
-            material['title']: material['id']
-            for material in materials[0]['options']
+            material["title"]: material["id"] for material in materials[0]["options"]
         }
 
     def _get_public_token(self):
@@ -195,15 +179,8 @@ class Pynted():
         """
         logger.debug("Getting token")
         endpoint = f"{self.base_url}/oauth/token"
-        data = {
-            "scope": "public",
-            "client_id": "android",
-            "grant_type": "password"
-        }
-        res = self.requester.post(
-            endpoint,
-            data=data
-        )
+        data = {"scope": "public", "client_id": "android", "grant_type": "password"}
+        res = self.requester.post(endpoint, data=data)
         if res.status_code == 403:
             raise req_exceptions.TooManyAttempts()
         if res.status_code == 401:

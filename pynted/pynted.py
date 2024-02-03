@@ -28,6 +28,14 @@ class Pynted():
         self.statuses = {}
         self.materials = {}
 
+    @property
+    def filters(self) -> dict:
+        return {
+            'colors': self.colors,
+            'statuses': self.statuses,
+            'materials': self.materials
+        }
+
     def get_user_by_username(self, username: str) -> VintedUser:
         """Get a user by its username.
 
@@ -146,3 +154,5 @@ class Pynted():
     #     price_from: int = 0,
     #     price_to: int = 100000,
     # )
+
+__all__ = ["Pynted"]

@@ -1,29 +1,25 @@
-name: Pylint
+name: Code polish
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
-  build:
+  linting:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.9", "3.10"]
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.8
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install --upgrade pip
-        pip install pylint
-    - name: Analysing the code with pylint
-      run: |
-        echo "Running pylint"
-        pylint_score=$(pylint my_module | tail -2 | grep -oP '[0-9\.]+/10' | grep -oP '[0-9\.]+')
-        echo "Pylint score was $pylint_score"
-        if (( $(echo "$pylint_score < 9.0" | bc -l) )); then
-          exit 1
-        fi
+        pip install isort black flake8 pylint
+    - name: Check code formatting with isort
+      run: isort . --check-only --ensure-newline-before-comments
+    - name: Check code formatting with black
+      run: black --check . --skip-string-normalization
+    - name: Lint code with flake8
+      run: flake8 .
+    - name: Lint code with pylint
+      run: pylint --rcfile=.pylintrc pynted --fail-under=9

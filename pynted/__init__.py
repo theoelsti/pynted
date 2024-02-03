@@ -23,4 +23,5 @@ You can catch them like this:
    User bar not found
 
 """
+
 __all__ = []

@@ -1,11 +1,12 @@
 from __future__ import annotations
+
 # Generic imports
 import logging
 
-# Package Imports
-from pynted.utils.requester import Requester
 import pynted.exceptions.requester as req_exceptions
 import pynted.exceptions.vinted as vin_exceptions
+# Package Imports
+from pynted.utils.requester import Requester
 from pynted.vinted.user import VintedUser
 
 logger: logging.Logger = logging.getLogger(__package__)

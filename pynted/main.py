@@ -1,6 +1,8 @@
 import logging
-from pynted.vinted import Pynted
+
 import pynted.exceptions.requester as req_exceptions
+from pynted.vinted import Pynted
+
 logger: logging.Logger = logging.getLogger(__package__)
 
 

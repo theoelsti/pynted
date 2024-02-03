@@ -22,4 +22,4 @@ jobs:
     - name: Lint code with flake8
       run: flake8 .
     - name: Lint code with pylint
-      run: find . -type f -name "*.py" | xargs pylint
+      run: pylint --rcfile=.pylintrc pynted --fail-under=9

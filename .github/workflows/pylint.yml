@@ -21,4 +21,9 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        echo "Running pylint"
+        pylint_score=$(pylint my_module | tail -2 | grep -oP '[0-9\.]+/10' | grep -oP '[0-9\.]+')
+        echo "Pylint score was $pylint_score"
+        if (( $(echo "$pylint_score < 9.0" | bc -l) )); then
+          exit 1
+        fi

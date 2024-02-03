@@ -16,7 +16,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install isort black flake8 pylint
     - name: Check code formatting with isort
-      run: isort . --check-only
+      run: isort . --check-only --ensure-newline-before-comments
     - name: Check code formatting with black
       run: black --check . --skip-string-normalization
     - name: Lint code with flake8

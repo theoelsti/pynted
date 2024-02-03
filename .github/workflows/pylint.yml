@@ -23,3 +23,7 @@ jobs:
       run: flake8 .
     - name: Lint code with pylint
       run: pylint --rcfile=.pylintrc pynted --fail-under=9
+    - name: Check for security vulnerabilities
+      run: pip install bandit && bandit -r pynted
+    - name: Run tests
+      run: python -m unittest discover -s tests -v

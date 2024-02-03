@@ -18,7 +18,7 @@ jobs:
     - name: Check code formatting with isort
       run: isort . --check-only
     - name: Check code formatting with black
-      run: black --check .
+      run: black --check . --skip-string-normalization
     - name: Lint code with flake8
       run: flake8 .
     - name: Lint code with pylint

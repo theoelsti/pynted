@@ -1,6 +1,6 @@
 import logging
 
-from pynted.main import main
+from .main import main
 
 logging.basicConfig(level=logging.INFO)
 

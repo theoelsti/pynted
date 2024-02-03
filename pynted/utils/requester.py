@@ -17,7 +17,10 @@ class Requester():
         self.session = requests.Session()
         self.headers = {}
         self.headers.update({
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) "
+                "Gecko/20100101 Firefox/121.0"
+            ),
             "Content-Type": "application/json; charset=UTF-8",
             "Cookie": f"locale={locale};",
         })
@@ -25,8 +28,19 @@ class Requester():
     def post(
             self,
             endpoint: str,
-            data: dict = {}
+            data: dict = None
     ) -> requests.Response:
+        """Post request to the vinted api.
+
+        Args:
+            endpoint (str): Endpoint to make the request to.
+            data (dict, optional): Data for the request. Defaults to None.
+
+        Returns:
+            requests.Response: Request class from the requests library.
+        """
+        if data is None:
+            data = {}
         logger.debug("POST request to %s with params %s", endpoint, data)
         try:
             res = self.session.post(
@@ -45,8 +59,19 @@ class Requester():
     def get(
             self,
             endpoint: str,
-            params: dict = {}
+            params: dict = None
     ) -> requests.Response:
+        """GET request to the vinted api.
+
+        Args:
+            `endpoint` (str): The endpoint to make the request to.
+            `params` (dict, optional): Params added to the request.
+
+        Returns:
+            `requests.Response`: _description_
+        """
+        if params is None:
+            params = {}
         logger.debug("GET request to %s with params %s", endpoint, params)
         try:
             res = self.session.get(
@@ -65,8 +90,19 @@ class Requester():
     def put(
             self,
             endpoint: str,
-            data: dict = {}
+            data: dict = None
     ) -> requests.Response:
+        """PUT request to the vinted api.
+
+        Args:
+            endpoint (str): The endpoint to make the request to.
+            data (dict, optional): Data for the request. Defaults to None.
+
+        Returns:
+            requests.Response: Request class from the requests library.
+        """
+        if data is None:
+            data = {}
         logger.debug("PUT request to %s with params %s", endpoint, data)
         try:
             res = self.session.put(
